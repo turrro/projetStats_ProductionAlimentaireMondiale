@@ -32,9 +32,9 @@ library(plyr)
 ```
 
 ```{r data}
-agri = read.table("Yield.csv")
+agri = read.table("Yield.csv", sep= ' ')
 head(agri)
-agripays = read.table("Yieldbycountry.csv")
+agripays = read.table("Yieldbycountry.csv", sep = ' ')
 head(agripays)
 ```
 
@@ -44,7 +44,7 @@ head(agripays)
 
 -   ACP pour sortir des classes de pays ou des classes de productions (par rendement, ou par climat = couple précipitations/température, ou par production principale)
 
-- ACP pour le rendement (pour voir quel facteur influence le plus cette variable)
+-   ACP pour le rendement (pour voir quel facteur influence le plus cette variable)
 
 -   essayer d'expliquer les rendements des différentes années par des facteurs (précipitations, températures, intrants) → évolution annuelle des rendements à comparer avec les évolutions annuelles des facteurs de production ? quel facteur de production est le plus important ? étude à l'échelle de chaque pays ? ou bien à l'échelle mondiale ?
 
@@ -56,7 +56,7 @@ head(agripays)
 
 -   quantité de pesticides = f(pays)
 
-
+- question du changement climatique : regarder des relations en lien avec la température (rendement par exemple) et prendre différents scénarios (+1°C, +2°C, ...)
 # Un peu de statistiques descriptives...
 
 ```{r description}
@@ -84,13 +84,21 @@ corrplot(correlation)
 On peut commencer par une analyse des facteurs de production des facteurs abiotiques (précipitations et températures) sur lesquels on ne peut pas jouer par exemple :
 
 ```{r analyse 1}
-ggplot(agri, aes(x=Year, y=yield)) + theme_bw() + geom_point(aes(y=yield,size=rain))
+ggplot(agri[agri$Item=="Potatoes",], aes(x=temp, y=yield)) + theme_bw() + geom_point(aes(y=yield,color=rain))
 ```
-
 
 De plus, dans notre jeu de données, on ne dispose que de la quantité de pesticides totale pour chaque année et par pays. On peut donc se demander s'il n'y a pas des cultures qui réagissent mieux à l'utilisation de pesticides que d'autres, ce qui est une question possiblement intéressante à se poser pour les pays afin d'orienter leur politique agricole.
 
 Tout d'abord, on peut commencer par un graphique représentant le rendement en fonction de l'utilisation de pesticides, pour essayer de dégager des groupes de cultures qui réagissent éventuellement mieux à l'utilisation de pesticides.
-```{r efficience pesticides}
 
+```{r comtpage}
+#comptage des cultures :
+table(agri$Item)
+```
+
+Ainsi on peut voir que certaines cultures sont sur-représentées dans la production agricole et que d'autres sont sous-représentées. La variabilité sera peut-être plus grande pour les cultures sous-représentées, qui ont donc une taille d'échantillon moins grande.
+
+```{r efficience pesticides}
+ggplot(agri, aes(y=yield, x=pest, color=Item)) + geom_point() + theme_bw()
+ggplot(agri, aes(x=yield, y=pest, color=Item)) + geom_point() + theme_bw()
 ```
