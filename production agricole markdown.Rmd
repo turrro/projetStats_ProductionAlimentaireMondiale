@@ -40,7 +40,7 @@ head(agripays)
 
 # Questions à se poser :
 
--   Décrire le jeu de données (stats descritptives) → voir des éventuelles corrélations entre des variables ? → correlation plot
+-   Décrire le jeu de données (stats descritptives) → voir des éventuelles corrélations entre des variables ? → graphes de corrélation (correlation plot)
 
 -   ACP pour sortir des classes de pays ou des classes de productions (par rendement, ou par climat, ou par production principale)
 
