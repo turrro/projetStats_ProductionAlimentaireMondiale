@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Préparation des données et packages
 
-```{r packages, warning=FALSE}
+```{r packages, message=FALSE, warning=FALSE}
 rm(list=ls())
 library(knitr)
 library(ggplot2)
