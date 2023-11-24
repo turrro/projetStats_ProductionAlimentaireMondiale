@@ -42,7 +42,7 @@ head(agripays)
 
 -   Décrire le jeu de données (stats descritptives) → voir des éventuelles corrélations entre des variables ? → graphes de corrélation (correlation plot)
 
--   ACP pour sortir des classes de pays ou des classes de productions (par rendement, ou par climat, ou par production principale)
+-   ACP pour sortir des classes de pays ou des classes de productions (par rendement, ou par climat = couple précipitations/température, ou par production principale)
 
 -   essayer d'expliquer les rendements des différentes années par des facteurs (précipitations, températures, intrants) → évolution annuelle des rendements à comparer avec les évolutions annuelles des facteurs de production ? quel facteur de production est le plus important ? étude à l'échelle de chaque pays ? ou bien à l'échelle mondiale ?
 
