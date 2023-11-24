@@ -32,9 +32,9 @@ library(plyr)
 ```
 
 ```{r data}
-agri = read.table("C:/Users/michele/Documents/Cours/APT_2023_2024/Stats/Projet - production agricole/Yield.csv")
+agri = read.table("Yield.csv")
 head(agri)
-agripays = read.table("C:/Users/michele/Documents/Cours/APT_2023_2024/Stats/Projet - production agricole/Yieldbycountry.csv")
+agripays = read.table("Yieldbycountry.csv")
 head(agripays)
 ```
 
