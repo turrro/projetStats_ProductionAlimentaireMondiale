@@ -32,9 +32,9 @@ library(plyr)
 ```
 
 ```{r data}
-agri = read.table("Yield.csv")
+agri = read.table("Yield.csv", sep= ' ')
 head(agri)
-agripays = read.table("Yieldbycountry.csv")
+agripays = read.table("Yieldbycountry.csv", sep = ' ')
 head(agripays)
 ```
 
@@ -84,6 +84,13 @@ ggplot(agri, aes(x=Year, y=yield)) + theme_bw() + geom_point(aes(y=yield,size=ra
 De plus, dans notre jeu de données, on ne dispose que de la quantité de pesticides totale pour chaque année et par pays. On peut donc se demander s'il n'y a pas des cultures qui réagissent mieux à l'utilisation de pesticides que d'autres, ce qui est une question possiblement intéressante à se poser pour les pays afin d'orienter leur politique agricole.
 
 Tout d'abord, on peut commencer par un graphique représentant le rendement en fonction de l'utilisation de pesticides, pour essayer de dégager des groupes de cultures qui réagissent éventuellement mieux à l'utilisation de pesticides.
-```{r efficience pesticides}
+```{r comtpage}
+#comptage des cultures :
+table(agri$Item)
+```
+Ainsi on peut voir que certaines cultures sont sur-représentées dans la production agricole et que d'autres sont sous-représentées. Peut-être qu'on peut justement essayer de séparer ces cultures en deux catégories, en fixant un certain seuil par exemple ?
 
+```{r efficience pesticides}
+ggplot(agri, aes(y=yield, x=pest, color=Item)) + geom_point() + theme_bw()
+ggplot(agri, aes(x=yield, y=pest, color=Item)) + geom_point() + theme_bw()
 ```
