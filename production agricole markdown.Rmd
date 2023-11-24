@@ -61,18 +61,14 @@ head(agripays)
 sommaire = summary(agri)
 kable(sommaire)
 str(agri)
-rendement = agri$Yield
-temperature = agri$temp
-pesticide = agri$pest
-culture = agri$Item
-pays = agri$Area
-precipitation = agri$rain
-annee = agri$Year
 ```
 
 Dans cette partie, nous allons essayer d'observer de éventuels liens entre les rendements agricoles des pays et les facteurs qui les caractérisent.
 
-On peut déjà dans un premier temps étudier une éventuelle corrélation
+On peut déjà dans un premier temps étudier une éventuelle corrélation entre les différentes variables avec un graphique de corrélation :
+
+```{r correlation}
+```
 
 # ... Puis une analyse plus en profondeur
 
