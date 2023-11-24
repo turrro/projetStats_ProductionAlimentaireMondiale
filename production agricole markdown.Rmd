@@ -91,6 +91,7 @@ De plus, dans notre jeu de données, on ne dispose que de la quantité de pestic
 
 Tout d'abord, on peut commencer par un graphique représentant le rendement en fonction de l'utilisation de pesticides, pour essayer de dégager des groupes de cultures qui réagissent éventuellement mieux à l'utilisation de pesticides.
 
+<<<<<<< Updated upstream
 ```{r comtpage}
 #comptage des cultures :
 table(agri$Item)
@@ -102,3 +103,7 @@ Ainsi on peut voir que certaines cultures sont sur-représentées dans la produc
 ggplot(agri, aes(y=yield, x=pest, color=Item)) + geom_point() + theme_bw()
 ggplot(agri, aes(x=yield, y=pest, color=Item)) + geom_point() + theme_bw()
 ```
+=======
+```
+
+>>>>>>> Stashed changes
