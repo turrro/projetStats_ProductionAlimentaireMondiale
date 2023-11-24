@@ -70,7 +70,14 @@ Dans cette partie, nous allons essayer d'observer de éventuels liens entre les 
 On peut déjà dans un premier temps étudier une éventuelle corrélation entre les différentes variables avec un graphique de corrélation :
 
 ```{r correlation}
+correlation = cor(agri[,c(3:dim(agri)[2])])
+kable(correlation,digits=2)
 ```
+
+```{r correlation, graph=T}
+corrplot(correlation)
+```
+
 
 # ... Puis une analyse plus en profondeur
 
