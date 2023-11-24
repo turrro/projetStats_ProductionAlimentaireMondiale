@@ -56,6 +56,7 @@ head(agripays)
 
 -   quantité de pesticides = f(pays)
 
+- question du changement climatique : regarder des relations en lien avec la température (rendement par exemple) et prendre différents scénarios (+1°C, +2°C, ...)
 # Un peu de statistiques descriptives...
 
 ```{r description}
