@@ -81,4 +81,9 @@ ggplot(agri, aes(x=Year, y=yield)) + theme_bw() + geom_point(aes(y=yield,size=ra
 ```
 
 
-De plus, dans notre jeu de données, on ne dispose que de la quantité de pesticides totale pour chaque année et par pays. On peut donc se demander s'il n'y a pas des cultures qui réagissent mieux à l'utilisation de pesticides que d'autres, ce qui est une question possiblement intéressante à se poser pour les pays afin d'orienter leur politique agricole
+De plus, dans notre jeu de données, on ne dispose que de la quantité de pesticides totale pour chaque année et par pays. On peut donc se demander s'il n'y a pas des cultures qui réagissent mieux à l'utilisation de pesticides que d'autres, ce qui est une question possiblement intéressante à se poser pour les pays afin d'orienter leur politique agricole.
+
+Tout d'abord, on peut commencer par un graphique représentant le rendement en fonction de l'utilisation de pesticides, pour essayer de dégager des groupes de cultures qui réagissent éventuellement mieux à l'utilisation de pesticides.
+```{r efficience pesticides}
+
+```
