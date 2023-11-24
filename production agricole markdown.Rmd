@@ -88,7 +88,7 @@ Tout d'abord, on peut commencer par un graphique représentant le rendement en f
 #comptage des cultures :
 table(agri$Item)
 ```
-Ainsi on peut voir que certaines cultures sont sur-représentées dans la production agricole et que d'autres sont sous-représentées. Peut-être qu'on peut justement essayer de séparer ces cultures en deux catégories, en fixant un certain seuil par exemple ?
+Ainsi on peut voir que certaines cultures sont sur-représentées dans la production agricole et que d'autres sont sous-représentées. La variabilité sera peut-être plus grande pour les cultures sous-représentées, qui ont donc une taille d'échantillon moins grande.
 
 ```{r efficience pesticides}
 ggplot(agri, aes(y=yield, x=pest, color=Item)) + geom_point() + theme_bw()
