@@ -109,8 +109,9 @@ On peut réaliser une Analyse en Composantes Principales pour voir s'il n'y a pa
 ```{r ACP france 1}
 # j'ai testé un truc mais c'est pas encore fonctionnel là...
 agrifrance = agripays[agripays$Area == "France", ]
-agrifrance2 = 
-res.pca = PCA(agrifrance, scale.unit = TRUE, graph = FALSE, ncp=7)
-fviz_eig(res.pca, addlabels=TRUE, ylim = c(0,50))
-agrifra
+agrifrance2 = agrifrance[seq(1,6),]
+agrifrance2
+#res.pca = PCA(agrifrance, scale.unit = TRUE, graph = FALSE, ncp=7)
+#fviz_eig(res.pca, addlabels=TRUE, ylim = c(0,50))
+#agrifrance
 ```
