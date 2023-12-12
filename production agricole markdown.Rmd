@@ -75,9 +75,6 @@ kable(correlation,digits=2)
 corrplot(correlation)
 ```
 
-```{r correlation, graph=T}
-```
-
 On ne peut pas distinguer de corrélation forte entre les différentes variables de notre jeu de données, peut-être qu'il faudrait affiner un peu notre recherche.
 # ... Puis une analyse plus en profondeur
 
