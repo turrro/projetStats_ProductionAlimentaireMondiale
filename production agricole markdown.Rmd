@@ -115,3 +115,6 @@ agrifrance2
 #fviz_eig(res.pca, addlabels=TRUE, ylim = c(0,50))
 #agrifrance
 ```
+
+"Ceci est un test de commit : 'Hello World!'"
+"Ceci est encore un test de commit : 'Hello World!'"
