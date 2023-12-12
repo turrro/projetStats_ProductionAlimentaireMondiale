@@ -115,15 +115,14 @@ agrifrance2
 ```{r ACP france 1}
 # j'ai testé un truc mais c'est pas encore fonctionnel là...
 agrifrance = agripays[agripays$Area == "France", ]
-colnames(agrifrance)
 colnames(agrifrance)[c(8,13,14)] = c("Rice, paddy","Sweet potatoes","Plantains and others")
-agrifrance2 = agrifrance[,c("Year","average_rain_fall_mm_per_year","pesticides_tonnes","avg_ temp","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams")]
+agrifrance2 = agrifrance[,c("Year","average_rain_fall_mm_per_year","pesticides_tonnes","avg_temp","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams")]
+#agrifrance2 = agrifrance[,c("Year","average_rain_fall_mm_per_year","pesticides_tonnes","avg_temp")]
 agrifrance2
 
 #colnames(agrifrance) = c("Area","Year","average rain fall","pesticides","average temperature","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams")
-#res.pca = PCA(agrifrance, scale.unit = TRUE, graph = FALSE, ncp=7)
-#fviz_eig(res.pca, addlabels=TRUE, ylim = c(0,50))
-#agrifrance
+res.pca = PCA(agrifrance2, scale.unit = TRUE, graph = FALSE, ncp=7)
+fviz_eig(res.pca, addlabels=TRUE, ylim = c(0,50))
 ```
 
 "Ceci est un test de commit : 'Hello World!'"
