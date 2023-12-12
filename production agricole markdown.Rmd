@@ -108,12 +108,10 @@ On peut réaliser une Analyse en Composantes Principales pour voir s'il n'y a pa
 
 ```{r ACP france 1}
 # j'ai testé un truc mais c'est pas encore fonctionnel là...
-agripays
 agrifrance = agripays[agripays$Area == "France", ]
-#colnames(agrifrance) = c()
-
-agrifrance
-
+colnames(agrifrance) = c("Area","Year","average rain fall","pesticides","average temperature","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams")
+agrifrance2 = agrifrance[c("Area","Year","pesticides"),]
+agrifrance2
 #res.pca = PCA(agrifrance, scale.unit = TRUE, graph = FALSE, ncp=7)
 #fviz_eig(res.pca, addlabels=TRUE, ylim = c(0,50))
 #agrifrance
