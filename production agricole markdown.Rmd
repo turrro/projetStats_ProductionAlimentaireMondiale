@@ -69,13 +69,13 @@ Dans cette partie, nous allons essayer d'observer de éventuels liens entre les 
 
 On peut déjà dans un premier temps étudier une éventuelle corrélation entre les différentes variables avec un graphique de corrélation :
 
-```{r correlation}
+```{r correlation, graph=T}
 correlation = cor(agri[,c(3:dim(agri)[2])])
 kable(correlation,digits=2)
+corrplot(correlation)
 ```
 
 ```{r correlation, graph=T}
-corrplot(correlation)
 ```
 
 On ne peut pas distinguer de corrélation forte entre les différentes variables de notre jeu de données, peut-être qu'il faudrait affiner un peu notre recherche.
@@ -95,8 +95,8 @@ De plus, dans notre jeu de données, on ne dispose que de la quantité de pestic
 
 Tout d'abord, on peut commencer par un graphique représentant le rendement en fonction de l'utilisation de pesticides, pour essayer de dégager des groupes de cultures qui réagissent éventuellement mieux à l'utilisation de pesticides.
 
-<<<<<<< Updated upstream
-```{r comtpage}
+
+```{r comptage}
 #comptage des cultures :
 table(agri$Item)
 ```
@@ -105,9 +105,5 @@ Ainsi on peut voir que certaines cultures sont sur-représentées dans la produc
 
 ```{r efficience pesticides}
 ggplot(agri, aes(y=yield, x=pest, color=Item)) + geom_point() + theme_bw()
-ggplot(agri, aes(x=yield, y=pest, color=Item)) + geom_point() + theme_bw()
-```
-=======
 ```
 
->>>>>>> Stashed changes
