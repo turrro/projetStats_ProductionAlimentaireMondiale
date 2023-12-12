@@ -105,13 +105,22 @@ ggplot(agri, aes(y=yield, x=pest, color=Item)) + geom_point() + theme_bw()
 ```
 
 On peut réaliser une Analyse en Composantes Principales pour voir s'il n'y a pas des liens entre les variables quantitatives :
+```{r}
+# j'ai testé un truc mais c'est pas encore fonctionnel là...
+agrifrance = agripays[agripays$Area == "France", ]
+agrifrance2 = agrifrance[,c("Area", "Maize")]
+agrifrance2
+```
 
 ```{r ACP france 1}
 # j'ai testé un truc mais c'est pas encore fonctionnel là...
 agrifrance = agripays[agripays$Area == "France", ]
-colnames(agrifrance) = c("Area","Year","average rain fall","pesticides","average temperature","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams")
-agrifrance2 = agrifrance[c("Area","Year","pesticides"),]
+colnames(agrifrance)
+colnames(agrifrance)[c(8,13,14)] = c("Rice, paddy","Sweet potatoes","Plantains and others")
+agrifrance2 = agrifrance[,c("Year","average_rain_fall_mm_per_year","pesticides_tonnes","avg_ temp","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams")]
 agrifrance2
+
+#colnames(agrifrance) = c("Area","Year","average rain fall","pesticides","average temperature","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams")
 #res.pca = PCA(agrifrance, scale.unit = TRUE, graph = FALSE, ncp=7)
 #fviz_eig(res.pca, addlabels=TRUE, ylim = c(0,50))
 #agrifrance
