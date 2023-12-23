@@ -85,7 +85,7 @@ On ne peut pas distinguer de corrélation forte entre les différentes variables
 
 On peut commencer par une analyse des facteurs de production des facteurs abiotiques (précipitations et températures) sur lesquels on ne peut pas jouer par exemple :
 
-```{r analyse 1}
+```{r exemple 1}
 ggplot(agri[agri$Item=="Potatoes",], aes(x=temp, y=yield)) + theme_bw() + geom_point(aes(y=yield,color=rain))
 ```
 
@@ -117,6 +117,7 @@ agrifrance2 = agrifrance[,c("Year", "Maize")]
 ggplot(agrifrance2,aes(y=Maize, x=Year)) + geom_point() + theme_bw() + ggtitle("Rendements du maïs selon l'année en France")
 ```
 
+
 ```{r ACP france 1}
 # j'ai testé un truc mais c'est pas encore fonctionnel là...
 agrifrance = agripays[agripays$Area == "France", ]
@@ -142,5 +143,25 @@ plot(p2)
 ```
 
 Sur le premier plan de l'ACP, on peut voir plusieurs variables qui sont corrélées : Les rendements du sorgho sont corrélés positivement à la température moyenne. En effet, le sorgho est une plante qui ressemble un peu au maïs mais qui est plus rustique et résiste mieux au stress hydrique. Or avec des températures croissantes, les périodes de stress hydrique et leur intensité augmentent. Ainsi le sorgho parvient à maintenir de bons niveaux de rendements. On peut donc bien comprendre la corrélation entre les températures et ses rendements. Par ailleurs, d'autres céréales comme le blé, le soja et le maïs sont elles corrélées aux précipitations annuelles. On peut penser que c'est justement car, au contraire du sorgho, ces cultures n'ont pas de résistance particulière aux stress hydriques, en revanche elles ont un très bonne efficience à l'eau, et particulièrement le maïs : pour une même quantité d'eau apportée à une culture, c'est chez le maïs qu'on observe la plus grande production de biomasse. On observe également une légère corrélation négative entre l'utilisation de pesticides en tonnes et l'année. Cela montre donc qu'il y a peut-être une réduction de l'usage de pesticides au fil des années. Cependant, cette anticorrélation reste peu flagrante.
+
+On peut ensuite essayer de voir si les rendements de ces grandes cultures sont influencées par des facteurs abiotiques comme la pluviométrie et la température annuelles. On décide de le faire sur une culture, le blé, car le maïs  a une forte tendance à être irrigué en France, notamment dans le Sud, et cette pratique peut donc cacher l'influence de ces facteurs climatiques. Cependant, dans la table, on peut voir que les précipitations sont constantes d'une année à l'autre, on ne peut donc pas voir l'influence de leurs variations sur la variabilité du rendement. On se concentre donc juste sur la température.
+
+```{r analyse blé france}
+ggplot(agrifrance2,aes(y=Wheat, x=avg_temp)) + geom_point() + theme_bw() + ggtitle("Rendements du blé en fonction de la température en France")
+```
+
+```{r analyse patate france}
+ggplot(agrifrance2,aes(y=Potatoes, x=avg_temp)) + geom_point() + theme_bw() + ggtitle("Rendements de pomme de terre en fonction de la température en France")
+```
+
+on peut tester de voir les rendements globaux en France peu importe la culture et voir si des groupes se dégagent ou pas :
+
+```{r analyse rendements france}
+rendements_france = agri[agri$Area == "France",]
+ggplot(rendements_france,aes(y=yield, x=temp, color = Item)) + geom_point() + theme_bw() + ggtitle("Rendements en fonction de la température en France")
+rendements_france_ss_patate = rendements_france[which(rendements_france$Item != "Potatoes"),]
+ggplot(rendements_france_ss_patate,aes(y=yield, x=temp, color = Item)) + geom_point() + theme_bw() + ggtitle("Rendements en fonction de la température en France (sans patate)")
+```
+
 
 "Ceci est un test de commit : 'Hello World!'" "Ceci est encore un test de commit : 'Hello World!'" "Ceci est encore un test de commit : 'Hello World!33'"
