@@ -94,7 +94,7 @@ ggplot(agri[agri$Item=="Potatoes",], aes(x=temp, y=yield)) + theme_bw() + geom_p
 #ggplot(agri, aes(y=yield, x=Area)) + theme_bw() + geom_point() + facet_grid(Area ~ Year)
 #j'arrive pas à représenter les rendements de tous les pays, il y a trop de données et en plus il y a chaque pays compté genre 30 fois pour le nombre d'années. peut-être qu'il faut choisir de faire ça pour chaque décennie plutôt, en mettant une couleur par année
 #je teste un truc avec quelques pays :
-agri_test = agri[c("France","Albania","Brazil","Canada"),]
+agri_simplifie = agri[which(agri$Year %in% c("1990","2000","2010") & agri$Item %in% c("Potatoes","Maize","Wheat")),]
 agri_test
 #na.omit(agri_test)
 #agri_test
