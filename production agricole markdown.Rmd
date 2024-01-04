@@ -98,7 +98,7 @@ agri_simplifie = agri[which(agri$Year %in% c("1990","2000","2010") & agri$Item %
 agri_simplifie
 #na.omit(agri_test)
 #agri_test
-#ggplot(agri_test, aes(y=yield, x=Area)) + theme_bw() + geom_point() + facet_grid(Area ~ Year)
+ggplot(agri_simplifie, aes(y=yield, x=Year, color = Item)) + theme_bw() + geom_point() 
 ```
 
 De plus, dans notre jeu de données, on ne dispose que de la quantité de pesticides totale pour chaque année et par pays. On peut donc se demander s'il n'y a pas des cultures qui réagissent mieux à l'utilisation de pesticides que d'autres, ce qui est une question possiblement intéressante à se poser pour les pays afin d'orienter leur politique agricole.
