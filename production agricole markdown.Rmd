@@ -267,4 +267,10 @@ Puisqu'on ne peut pas vraiment distinguer les différentes cultures en fonction 
 ggplot(rendements_france_ss_patate,aes(y=yield, x=pest, color = Item)) + geom_point() + theme_bw() + ggtitle("Rendements en fonction de l'utilisation de pesticides en France (sans patate)")
 ```
 
+On va essayer maintenant d'expliquer la variabilité du rendement en fonction de plusieurs facteurs grâce à un modèle. Puisqu'on travaille avec des donénes à la fois qualitatives et quantitatives, on va donc faire un modèle d'ANCOVA à plusieurs facteurs :
+
+```{r ancova}
+ancova_rdt1.lm = lm(yield ~ temp * rain + Item*rain, data = agri)
+summary(ancova_rdt1.lm)
+```
 
