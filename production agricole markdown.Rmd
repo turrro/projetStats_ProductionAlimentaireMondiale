@@ -5,7 +5,6 @@ date: "2023-11-23"
 output: html_document
 ---
 
-bonjour c'ets oam
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -63,13 +62,93 @@ head(agripays)
 
 # Un peu de statistiques descriptives...
 
-```{r description}
-sommaire = summary(agri)
-kable(sommaire)
+Dans cette partie, nous allons essayer d'observer d'éventuels liens entre les rendements agricoles des pays et les facteurs qui les caractérisent.
+
+Tout d'abord, regardons un extrait du jeu de données. 
+
+```{r}
 str(agri)
 ```
 
-Dans cette partie, nous allons essayer d'observer d'éventuels liens entre les rendements agricoles des pays et les facteurs qui les caractérisent.
+Observons également un résumé du jeu de données.
+
+```{r}
+donnees = agri
+colnames(donnees) <- c("Pays", "Récolte", "Année", "Rendement (100 g/ha)", "Précipitation (mm/an)", "Pesticide (tonnes)", "Température (°C)")
+sommaire = summary(donnees)
+kable(sommaire)
+```
+
+Nous pouvons dans un premier temps nous intéresser au rendement pour chaque pays. 
+
+```{r}
+rendement_pays <- summarise(.data = group_by(agri, Area),
+                            mean_yield = mean(yield))
+
+arrange(rendement_pays, mean_yield)
+```
+
+Les pays où les rendements sont les plus élevés sont situés plutôt en Europe (Royaume-Uni, Belgique, Danemark...). A l'inverse, les pays où les rendements sont les moins élevés sont localisés davantage en Afrique (Botswana, Erythrée, République centrafricaine...).
+
+Nous nous intéressons maintenant aux rendements par types de récolte.
+
+```{r}
+recolte = data.frame(colMeans(agripays[,6:length(agripays)[1]], na.rm=TRUE))
+colnames(recolte) <- c("Rendement")
+
+ggplot(recolte) +
+  aes(x = c("Maïs", "Pomme de terre", "Riz", "Sorgho", "Soja", "Blé", "Manioc", "Patate douce", "Plantain et autres", "Igname"), y = recolte$Rendement) + 
+  geom_point() +
+  labs(x = "Récolte", y = "Rendement (100 g/ha)") +
+  theme(axis.text.x = element_text(angle = 45))
+```
+
+On semble distinguer trois types de cultures :
+
+-- la pomme de terre qui a un rendement élevé ;
+
+-- les autres tubercules (manioc, igname, patate douce et plantain) qui ont un rendement intermédiaire (1,5 à 2 fois moins élevé que la pomme de terre) ;
+
+-- les grains (blé, maïs, riz, soja et sorgho) qui ont un rendement faible (3 à 4 fois moins élevé que la pomme de terre).
+
+
+Nous regardons également le rendement agricole mondial par année.
+
+```{r}
+rendement_annee <- data.frame(summarise(.data = group_by(agri, Year),
+                            mean_yield = mean(yield)))
+
+ggplot(rendement_annee) +
+  aes(x = Year, y = mean_yield) +
+  geom_point() +
+  labs(x = "Année", y = "Rendement (100 g/ha)")
+```
+
+On peut observer une augmentation globale assez constante du rendement agricole mondial entre 1990 et 2010.
+
+On regarde maintenant le lien entre la température/les précipitations et le rendement agricole mondial.
+
+```{r}
+rendement_temp <- data.frame(summarise(.data = group_by(agri, temp),
+                            mean_yield = mean(yield)))
+
+ggplot(rendement_temp) +
+  aes(x = temp, y = mean_yield) +
+  geom_point() +
+  labs(x = "Température (°C)", y = "Rendement (100 g/ha)")
+
+rendement_rain <- data.frame(summarise(.data = group_by(agri, rain),
+                            mean_yield = mean(yield)))
+
+ggplot(rendement_rain) +
+  aes(x = rain, y = mean_yield) +
+  geom_point() +
+  labs(x = "Précipitations (mm)", y = "Rendement (100 g/ha)")
+```
+
+Il n'y a pas l'air d'y avoir de relation claire entre la température/les précipitations et le rendement agricole. Cependant, les fortes températures/précipitations ne semblent pas permettrent d'obtenir de forts rendements.
+
+#Analyse en Composantes Principales
 
 On peut déjà dans un premier temps étudier une éventuelle corrélation entre les différentes variables avec un graphique de corrélation :
 
@@ -180,4 +259,4 @@ Puisqu'on ne peut pas vraiment distinguer les différentes cultures en fonction 
 ggplot(rendements_france_ss_patate,aes(y=yield, x=pest, color = Item)) + geom_point() + theme_bw() + ggtitle("Rendements en fonction de l'utilisation de pesticides en France (sans patate)")
 ```
 
-"Ceci est un test de commit : 'Hello World!'" "Ceci est encore un test de commit : 'Hello World!'" "Ceci est encore un test de commit : 'Hello World!33'"
+
