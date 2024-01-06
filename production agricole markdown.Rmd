@@ -215,7 +215,7 @@ ggplot(agri[agri$Item=="Potatoes",], aes(x=temp, y=yield)) + theme_bw() + geom_p
 #ggplot(agri, aes(y=yield, x=Area)) + theme_bw() + geom_point() + facet_grid(Area ~ Year)
 #j'arrive pas à représenter les rendements de tous les pays, il y a trop de données et en plus il y a chaque pays compté genre 30 fois pour le nombre d'années. peut-être qu'il faut choisir de faire ça pour chaque décennie plutôt, en mettant une couleur par année
 #je teste un truc avec quelques pays :
-agri_simplifie = agri[which(agri$Year %in% c("1990","2000","2010") & agri$Item %in% c("Potatoes","Maize","Wheat")),]
+agri_simplifie = agri[which(agri$Year %in% c("1990","1995","2000","2005","2010") & agri$Item %in% c("Potatoes","Maize","Wheat")),]
 agri_simplifie
 #na.omit(agri_test)
 #agri_test
@@ -267,7 +267,7 @@ Puisqu'on ne peut pas vraiment distinguer les différentes cultures en fonction 
 ggplot(rendements_france_ss_patate,aes(y=yield, x=pest, color = Item)) + geom_point() + theme_bw() + ggtitle("Rendements en fonction de l'utilisation de pesticides en France (sans patate)")
 ```
 
-On va essayer maintenant d'expliquer la variabilité du rendement en fonction de plusieurs facteurs grâce à un modèle. Puisqu'on travaille avec des donénes à la fois qualitatives et quantitatives, on va donc faire un modèle d'ANCOVA à plusieurs facteurs :
+On va essayer maintenant d'expliquer la variabilité du rendement en fonction de plusieurs facteurs grâce à un modèle. Puisqu'on travaille avec des données à la fois qualitatives et quantitatives, on va donc faire un modèle d'ANCOVA à plusieurs facteurs :
 
 ```{r ancova}
 ancova_rdt1.lm = lm(yield ~ temp * rain + Item*rain, data = agri)
