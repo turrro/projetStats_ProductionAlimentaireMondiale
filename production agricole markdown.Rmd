@@ -258,7 +258,7 @@ on peut tester de voir les rendements globaux en France peu importe la culture e
 rendements_france = agri[agri$Area == "France",]
 ggplot(rendements_france,aes(y=yield, x=temp, color = Item)) + geom_point() + theme_bw() + ggtitle("Rendements en fonction de la température en France")
 rendements_france_ss_patate = rendements_france[which(rendements_france$Item != "Potatoes"),]
-ggplot(rendements_france_ss_patate,aes(y=yield, x=temp, color = Item)) + geom_point() + theme_bw() + ggtitle("Rendements en fonction de la température en France (sans patate)")
+ggplot(rendements_france_ss_patate,aes(y=yield, x=temp, color = Item)) + geom_point() + theme_bw() + ggtitle("Rendements en fonction de la température en France (sans pdt)")
 ```
 
 Puisqu'on ne peut pas vraiment distinguer les différentes cultures en fonction des facteurs abiotiques, on peut donc essayer de les discriminer selon d'autres facteurs, comme les pesticides :
@@ -269,8 +269,13 @@ ggplot(rendements_france_ss_patate,aes(y=yield, x=pest, color = Item)) + geom_po
 
 On va essayer maintenant d'expliquer la variabilité du rendement en fonction de plusieurs facteurs grâce à un modèle. Puisqu'on travaille avec des données à la fois qualitatives et quantitatives, on va donc faire un modèle d'ANCOVA à plusieurs facteurs :
 
-```{r ancova}
-ancova_rdt1.lm = lm(yield ~ temp * rain + Item*rain, data = agri)
-summary(ancova_rdt1.lm)
-```
+On peut penser qu'il y a aussi un effet lié au pays dans lequel on se trouve, en plus des facteurs abiotiques, mais cela rend trop compliquée la lecture des données, donc dans un premier temps on peut faire l'approximation selon laquelle l'effet du pays qui ne serait pas compté dans les facteurs abiotiques serait seulement celui des pesticides. Ainsi, on ne garde pour le moment dans ces facteurs explicatifs que les précipitations, les températures, l'utilisation de pesticides ainsi que les types de cultures.
 
+```{r ancova}
+ancova_rdt1.lm = lm(yield ~ temp * rain + Item + pest, data = agri)
+summary(ancova_rdt1.lm)
+
+par(mfrow=c(2,2))
+plot(ancova_rdt1.lm)
+```
+Tout d'abord, on peut voir que notre modèle a un p-value significative, cela veut dire qu'il est plus intéressant que le modèle nul, et on peut voir que presque tous les coefficients sont significativement non nuls. Cependant, au vu des graphes de diagnostic, certaines hypothèses ne sont pas vérifiées. Premièrement, il semble que les erreurs ne soient pas centrées, on peut voir de gros écarts sur leurs valeurs. De même, on peut avoir quelques doutes concernant l'homoscédasticité des erreurs. Enfin, l'hypothèse de normalité des erreurs est aussi à reconsidérer. Peut-être qu'on peut donc affiner notre modèle.
