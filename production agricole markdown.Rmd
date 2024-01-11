@@ -280,4 +280,12 @@ On observe également une légère corrélation négative entre l'utilisation de
 
 On peut ensuite essayer de voir si les rendements de ces grandes cultures sont influencées par des facteurs abiotiques comme la pluviométrie et la température annuelles. On décide de le faire sur une culture, le blé, car le maïs a une forte tendance à être irrigué en France, notamment dans le Sud, et cette pratique peut donc cacher l'influence de ces facteurs climatiques. Cependant, dans la table, on peut voir que les précipitations sont constantes d'une année à l'autre, on ne peut donc pas voir l'influence de leurs variations sur la variabilité du rendement. On se concentre donc juste sur la température.
 
+#Explication du rendement en fonction du climat
+
+#Explication du rendement en fonction de l'utilisation de pesticides
+
+#Explication du rendement mondial en fonction de l'année
+
+# Explication de l'utilisation de pesticides en fonction des pays
+
 
