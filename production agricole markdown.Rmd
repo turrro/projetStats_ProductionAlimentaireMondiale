@@ -159,49 +159,6 @@ Il n'y a pas l'air d'y avoir de relation claire entre la température/les préci
 
 
 
-#Analyse en Composantes Principales
-
-
-On peut réaliser une Analyse en Composantes Principales pour voir s'il n'y a pas des liens entre les variables quantitatives :
-
-```{r test}
-# j'ai testé un truc mais c'est pas encore fonctionnel là...
-agrifrance = agripays[agripays$Area == "France", ]
-agrifrance2 = agrifrance[,c("Year", "Maize")]
-```
-
-```{r ACP france 1}
-# j'ai testé un truc mais c'est pas encore fonctionnel là...
-agrifrance = agripays[agripays$Area == "France", ]
-colnames(agrifrance)[c(8,13,14)] = c("Rice, paddy","Sweet potatoes","Plantains and others")
-agrifrance2 = agrifrance[,c("Year","average_rain_fall_mm_per_year","pesticides_tonnes","avg_temp","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat")]
-#agrifrance2 = agrifrance[,c("Year","average_rain_fall_mm_per_year","pesticides_tonnes","avg_temp")]
-agrifrance2
-
-#colnames(agrifrance) = c("Area","Year","average rain fall","pesticides","average temperature","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams")
-res.pca = PCA(agrifrance2, scale.unit = TRUE, graph = FALSE, ncp=5)
-get_eigenvalue(res.pca)
-fviz_eig(res.pca, addlabels = TRUE, ylim = c(0,50))
-```
-
-Concernant l'ACP que l'on vient de faire, il est clair qu'on n'atteint pas les 90% d'inertie espérés, mais on voit une rupture de pente sur le dernier graphe quand on passe à 3 dimensions. Sur le premier plan, on ne conserve que 56% de l'inertie totale, et pour atteindre 90% il nous faut 5 dimensions.
-
-```{r ACP2}
-p1 =fviz_pca_var(res.pca, axes = 1:2)
-p2 =fviz_pca_var(res.pca, axes = 3:4)
-#grid.arrange(p1,p2, nrow=1)
-plot(p1)
-plot(p2)
-```
-
-Sur le premier plan de l'ACP, on peut voir plusieurs variables qui sont corrélées : Les rendements du sorgho sont corrélés positivement à la température moyenne. En effet, le sorgho est une plante qui ressemble un peu au maïs mais qui est plus rustique et résiste mieux au stress hydrique. Or avec des températures croissantes, les périodes de stress hydrique et leur intensité augmentent. Ainsi le sorgho parvient à maintenir de bons niveaux de rendements. On peut donc bien comprendre la corrélation entre les températures et ses rendements.
-
-(en fait je me suis trompé, il n'y a pas de variabilité des précipitations au cours des années donc ça fait une flèche qui reste au centre du cercle... du coup ce paragraphe je sais pas si on le garde) d'autres céréales comme le blé, le soja et le maïs sont elles corrélées aux précipitations annuelles. On peut penser que c'est justement car, au contraire du sorgho, ces cultures n'ont pas de résistance particulière aux stress hydriques, en revanche elles ont un très bonne efficience à l'eau, et particulièrement le maïs : pour une même quantité d'eau apportée à une culture, c'est chez le maïs qu'on observe la plus grande production de biomasse.
-
-On observe également une légère corrélation négative entre l'utilisation de pesticides en tonnes et l'année. Cela montre donc qu'il y a peut-être une réduction de l'usage de pesticides au fil des années. Cependant, cette anticorrélation reste peu flagrante.
-
-On peut ensuite essayer de voir si les rendements de ces grandes cultures sont influencées par des facteurs abiotiques comme la pluviométrie et la température annuelles. On décide de le faire sur une culture, le blé, car le maïs a une forte tendance à être irrigué en France, notamment dans le Sud, et cette pratique peut donc cacher l'influence de ces facteurs climatiques. Cependant, dans la table, on peut voir que les précipitations sont constantes d'une année à l'autre, on ne peut donc pas voir l'influence de leurs variations sur la variabilité du rendement. On se concentre donc juste sur la température.
-
 # ... Puis une analyse plus en profondeur
 
 On peut commencer par une analyse des facteurs de production des facteurs abiotiques (précipitations et températures) sur lesquels on ne peut pas jouer par exemple :
@@ -279,3 +236,48 @@ par(mfrow=c(2,2))
 plot(ancova_rdt1.lm)
 ```
 Tout d'abord, on peut voir que notre modèle a un p-value significative, cela veut dire qu'il est plus intéressant que le modèle nul, et on peut voir que presque tous les coefficients sont significativement non nuls, il y a doonc peut-être quelque chose à creuser. Cependant, au vu des graphes de diagnostic, certaines hypothèses ne sont pas vérifiées. Premièrement, il semble que les erreurs ne soient pas centrées, on peut voir de gros écarts sur leurs valeurs. De même, on peut avoir quelques doutes concernant l'homoscédasticité des erreurs. Enfin, l'hypothèse de normalité des erreurs est aussi à reconsidérer. Peut-être qu'on peut donc affiner notre modèle.
+
+#Analyse en Composantes Principales
+
+
+On peut réaliser une Analyse en Composantes Principales pour voir s'il n'y a pas des liens entre les variables quantitatives :
+
+```{r test}
+# j'ai testé un truc mais c'est pas encore fonctionnel là...
+agrifrance = agripays[agripays$Area == "France", ]
+agrifrance2 = agrifrance[,c("Year", "Maize")]
+```
+
+```{r ACP france 1}
+# j'ai testé un truc mais c'est pas encore fonctionnel là...
+agrifrance = agripays[agripays$Area == "France", ]
+colnames(agrifrance)[c(8,13,14)] = c("Rice, paddy","Sweet potatoes","Plantains and others")
+agrifrance2 = agrifrance[,c("Year","average_rain_fall_mm_per_year","pesticides_tonnes","avg_temp","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat")]
+#agrifrance2 = agrifrance[,c("Year","average_rain_fall_mm_per_year","pesticides_tonnes","avg_temp")]
+agrifrance2
+
+#colnames(agrifrance) = c("Area","Year","average rain fall","pesticides","average temperature","Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams")
+res.pca = PCA(agrifrance2, scale.unit = TRUE, graph = FALSE, ncp=5)
+get_eigenvalue(res.pca)
+fviz_eig(res.pca, addlabels = TRUE, ylim = c(0,50))
+```
+
+Concernant l'ACP que l'on vient de faire, il est clair qu'on n'atteint pas les 90% d'inertie espérés, mais on voit une rupture de pente sur le dernier graphe quand on passe à 3 dimensions. Sur le premier plan, on ne conserve que 56% de l'inertie totale, et pour atteindre 90% il nous faut 5 dimensions.
+
+```{r ACP2}
+p1 =fviz_pca_var(res.pca, axes = 1:2)
+p2 =fviz_pca_var(res.pca, axes = 3:4)
+#grid.arrange(p1,p2, nrow=1)
+plot(p1)
+plot(p2)
+```
+
+Sur le premier plan de l'ACP, on peut voir plusieurs variables qui sont corrélées : Les rendements du sorgho sont corrélés positivement à la température moyenne. En effet, le sorgho est une plante qui ressemble un peu au maïs mais qui est plus rustique et résiste mieux au stress hydrique. Or avec des températures croissantes, les périodes de stress hydrique et leur intensité augmentent. Ainsi le sorgho parvient à maintenir de bons niveaux de rendements. On peut donc bien comprendre la corrélation entre les températures et ses rendements.
+
+(en fait je me suis trompé, il n'y a pas de variabilité des précipitations au cours des années donc ça fait une flèche qui reste au centre du cercle... du coup ce paragraphe je sais pas si on le garde) d'autres céréales comme le blé, le soja et le maïs sont elles corrélées aux précipitations annuelles. On peut penser que c'est justement car, au contraire du sorgho, ces cultures n'ont pas de résistance particulière aux stress hydriques, en revanche elles ont un très bonne efficience à l'eau, et particulièrement le maïs : pour une même quantité d'eau apportée à une culture, c'est chez le maïs qu'on observe la plus grande production de biomasse.
+
+On observe également une légère corrélation négative entre l'utilisation de pesticides en tonnes et l'année. Cela montre donc qu'il y a peut-être une réduction de l'usage de pesticides au fil des années. Cependant, cette anticorrélation reste peu flagrante.
+
+On peut ensuite essayer de voir si les rendements de ces grandes cultures sont influencées par des facteurs abiotiques comme la pluviométrie et la température annuelles. On décide de le faire sur une culture, le blé, car le maïs a une forte tendance à être irrigué en France, notamment dans le Sud, et cette pratique peut donc cacher l'influence de ces facteurs climatiques. Cependant, dans la table, on peut voir que les précipitations sont constantes d'une année à l'autre, on ne peut donc pas voir l'influence de leurs variations sur la variabilité du rendement. On se concentre donc juste sur la température.
+
+
