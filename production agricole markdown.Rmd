@@ -162,7 +162,7 @@ Il n'y a pas l'air d'y avoir de relation claire entre la température/les préci
 # ... Puis une analyse plus en profondeur
 
 
-#Séparation des pays par classes
+#Séparation des pays par classes (Classification)
 
 Étant donné la taille du jeu de données, on va commencer par créer des classes de pays selon différents critères : Le rendement (yield), et le climat (temp et rain)
 
@@ -172,17 +172,18 @@ On commence par extraire de la table "agri" les colonnes qui nous intéressent p
 kmeans_prod_agri = agri[c(1,4)]
 x <- kmeans_prod_agri[,2]
 mean(x)
+mean(kmeans_prod_agri[,2])
 ```
 
 
 ```{r Kmeans production}
 #on commence par extraire seulement les colonnes qui nous intéressent dans la table agri
 
-kmeans_prod_agri = prod_agri[c(1,4)]
+kmeans_prod_agri = agri[c(1,4)]
 x <- kmeans_prod_agri[,2]
 x_m <- mean(x)
 
-kmeans_prod_agri$yield_norm = (x - x_m)/sd(x)
+kmeans_prod_agri$yield = (x - x_m)/sd(x)
 kmeans_prod_agri
 
 #Kmax = 20
@@ -190,11 +191,18 @@ kmeans_prod_agri
 #for (k in 1:(Kmax))
 #{ 
 #  km = kmeans(kmeans_prod_agri, centers = k, nstart = 100)
-#  IW[k]
-#  }
+#  IW[k]=km$tot.withinss
+#}
+#ggplot(data.frame(k=1:(Kmax),Iw = IW)) + aes(x = K, y = Iw) + geom_point() + geom_line() + labs(x = #"K", y = expression(I[w](K)))
 ```
 
 On peut commencer par une analyse des facteurs de production des facteurs abiotiques (précipitations et températures) sur lesquels on ne peut pas jouer par exemple :
+
+```{r test}
+# j'ai testé un truc mais c'est pas encore fonctionnel là...
+agrifrance = agripays[agripays$Area == "France", ]
+agrifrance2 = agrifrance[,c("Year", "Maize")]
+```
 
 ```{r exemple 1}
 ggplot(agri[agri$Item=="Potatoes",], aes(x=temp, y=yield)) + theme_bw() + geom_point(aes(y=yield,color=rain))
@@ -238,11 +246,11 @@ ggplot(agrifrance2,aes(y=Maize, x=Year)) + geom_point() + theme_bw() + ggtitle("
 
 
 ```{r analyse blé france}
-ggplot(agrifrance2,aes(y=Wheat, x=avg_temp)) + geom_point() + theme_bw() + ggtitle("Rendements du blé en fonction de la température en France")
+ggplot(agrifrance,aes(y=Wheat, x=avg_temp)) + geom_point() + theme_bw() + ggtitle("Rendements du blé en fonction de la température en France")
 ```
 
 ```{r analyse patate france}
-ggplot(agrifrance2,aes(y=Potatoes, x=avg_temp)) + geom_point() + theme_bw() + ggtitle("Rendements de pomme de terre en fonction de la température en France")
+ggplot(agrifrance,aes(y=Potatoes, x=avg_temp)) + geom_point() + theme_bw() + ggtitle("Rendements de pomme de terre en fonction de la température en France")
 ```
 
 on peut tester de voir les rendements globaux en France peu importe la culture et voir si des groupes se dégagent ou pas :
@@ -278,11 +286,7 @@ Tout d'abord, on peut voir que notre modèle a un p-value significative, cela ve
 
 On peut réaliser une Analyse en Composantes Principales pour voir s'il n'y a pas des liens entre les variables quantitatives :
 
-```{r test}
-# j'ai testé un truc mais c'est pas encore fonctionnel là...
-agrifrance = agripays[agripays$Area == "France", ]
-agrifrance2 = agrifrance[,c("Year", "Maize")]
-```
+
 
 ```{r ACP france 1}
 # j'ai testé un truc mais c'est pas encore fonctionnel là...
