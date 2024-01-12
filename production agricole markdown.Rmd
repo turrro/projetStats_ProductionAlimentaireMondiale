@@ -186,14 +186,14 @@ x_m <- mean(x)
 kmeans_prod_agri$yield = (x - x_m)/sd(x)
 kmeans_prod_agri
 
-#Kmax = 20
-#IW = numeric(Kmax)
-#for (k in 1:(Kmax))
-#{ 
-#  km = kmeans(kmeans_prod_agri, centers = k, nstart = 100)
-#  IW[k]=km$tot.withinss
-#}
-#ggplot(data.frame(k=1:(Kmax),Iw = IW)) + aes(x = K, y = Iw) + geom_point() + geom_line() + labs(x = #"K", y = expression(I[w](K)))
+Kmax = 20
+IW = numeric(Kmax)
+for (k in 1:(Kmax))
+{ 
+  km = kmeans(kmeans_prod_agri[,2], centers = k, nstart = 100)
+  IW[k]=km$tot.withinss
+}
+ggplot(data.frame(k=1:(Kmax),Iw = IW)) + aes(x = K, y = Iw) + geom_point() + geom_line() + labs(x = "K", y = expression(I[w](K)))
 ```
 
 On peut commencer par une analyse des facteurs de production des facteurs abiotiques (précipitations et températures) sur lesquels on ne peut pas jouer par exemple :
