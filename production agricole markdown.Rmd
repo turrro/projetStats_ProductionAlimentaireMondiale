@@ -32,6 +32,7 @@ library(car)
 library(plyr)
 library(gridExtra)
 library(dplyr)
+library(tidyverse)
 ```
 
 ```{r data}
@@ -180,20 +181,51 @@ mean(kmeans_prod_agri[,2])
 #on commence par extraire seulement les colonnes qui nous intéressent dans la table agri
 
 kmeans_prod_agri = agri[c(1,4)]
-x <- kmeans_prod_agri[,2]
-x_m <- mean(x)
+x1 <- kmeans_prod_agri[,2]
+x_m <- mean(x1)
 
-kmeans_prod_agri$yield = (x - x_m)/sd(x)
-kmeans_prod_agri
+kmeans_prod_agri$yield = (x1 - x_m)/sd(x1)
+x1norm = kmeans_prod_agri[,2]
 
-Kmax = 20
-IW = numeric(Kmax)
-for (k in 1:(Kmax))
-{ 
-  km = kmeans(kmeans_prod_agri[,2], centers = k, nstart = 100)
-  IW[k]=km$tot.withinss
-}
-ggplot(data.frame(k=1:(Kmax),Iw = IW)) + aes(x = K, y = Iw) + geom_point() + geom_line() + labs(x = "K", y = expression(I[w](K)))
+head(kmeans_prod_agri)
+# head(data.frame(c(seq(1,length(kmeans_prod_agri[,1])))))
+abscisse = data.frame(as.numeric(c(seq(1,length(x1norm)))))
+head(abscisse[,1])
+is.numeric(abscisse[,1])
+ordonnee = data.frame(x1norm)
+head(ordonnee[,1])
+is.numeric(ordonnee[,1])
+# ggplot(kmeans_prod_agri,
+#        aes(x = as.numeric(abscisse[,1]), y = as.numeric(ordonnee[,1])), color = "Area") +
+#        geom_point() +
+#        labs(x = "pays", y = "rendement")
+
+# Kmax = 20
+# IW = numeric(Kmax)
+# for (k in 1:(Kmax))
+# {
+#   km = kmeans(kmeans_prod_agri[,2], centers = k, nstart = 100, iter.max = 30)
+#   IW[k]=km$tot.withinss
+# }
+# 
+km_cluster_prod = kmeans(kmeans_prod_agri[,2], centers = 4, nstart = 100, iter.max=30)$cluster
+km_cluster_prod
+
+kmeans_prod_agri$cluster = km_cluster_prod
+
+ggplot(kmeans_prod_agri,
+       aes(x = as.numeric(abscisse[,1]), y = as.numeric(ordonnee[,1]))) + 
+       geom_point() +
+       scale_shape_discrete(kmeans_prod_agri$cluster) +
+       labs(x = "code pays", y = "rendement")
+# ggplot(data.frame(k = 1:(Kmax),
+#                   Iw = IW)) + 
+#   aes(x = K, 
+#       y = Iw) + 
+#   geom_point() + 
+#   geom_line() + 
+#   labs(x = "K", 
+#        y = expression(I[w](K)))
 ```
 
 On peut commencer par une analyse des facteurs de production des facteurs abiotiques (précipitations et températures) sur lesquels on ne peut pas jouer par exemple :
@@ -320,12 +352,89 @@ On observe également une légère corrélation négative entre l'utilisation de
 
 On peut ensuite essayer de voir si les rendements de ces grandes cultures sont influencées par des facteurs abiotiques comme la pluviométrie et la température annuelles. On décide de le faire sur une culture, le blé, car le maïs a une forte tendance à être irrigué en France, notamment dans le Sud, et cette pratique peut donc cacher l'influence de ces facteurs climatiques. Cependant, dans la table, on peut voir que les précipitations sont constantes d'une année à l'autre, on ne peut donc pas voir l'influence de leurs variations sur la variabilité du rendement. On se concentre donc juste sur la température.
 
-#Explication du rendement en fonction du climat
-
-#Explication du rendement en fonction de l'utilisation de pesticides
+#Explication du rendement en fonction du climat (Alice)
 
 #Explication du rendement mondial en fonction de l'année
 
-# Explication de l'utilisation de pesticides en fonction des pays
+#Explication du rendement en fonction de l'utilisation de pesticides + utilisation des pesticides par pays
+
+On décide ici de classer les pays en fonction de l'orientation de leur production :
+dans chaque pays, on fait la moyenne des rendements des 23 années pour chaque culture
+
+```{r}
+#tout d'abord, on va créer une base de donnée contenant les moyennes de chaque culture sur toutes les années et ce pour chaque pays 
+# 
+# for (pays in agri$Area)
+# {
+#   agri_sub = subset(agri,Area == pays)
+#   for (culture in c("Maize","Potatoes","Rice, paddy","Sorghum","Soybeans","Wheat","Cassava","Sweet potatoes","Plantains and others","Yams"))
+#        {agri_sub_sub = subset(agri_sub,Item == culture)
+#        moyenne_par_culture = mean(agri_sub_sub[,4])
+#     # moyenne_par_culture = mean(agri[pays][which(Item %in% c(culture) & Area %in% c(pays))])
+#         # rendements = tibble(Area = pays, Item = culture, Yield = moyenne_par_culture)
+#        # add_row(rendements,Area = pays, Item = culture, Yield = moyenne_par_culture)
+#        rendements[ncol(rendements)+1,] = c(pays, culture, moyenne_par_culture)
+#   }
+# }
+
+data = agripays %>%
+  group_by(Area)
+
+
+
+```
+
+
+```{r}
+data = agri
+data <- data %>% 
+  group_by(Area,Item) %>% 
+  mutate(m_yield = mean(yield)) %>% 
+  ungroup() %>% 
+  distinct(m_yield, .keep_all = T)
+
+
+```
+
+
+```{r Kmeans orientation}
+#on commence par extraire seulement les colonnes qui nous intéressent dans la table data
+
+kmeans_orientation = data[c(1,2,8)]
+kmeans_orientation[,c(1,2)]
+kmeans_orientation[,3]
+kmeans_orientationCR = add_column(kmeans_orientation[,c(1,2)],scale(kmeans_orientation[,3]))
+
+Kmax = 20
+IW = numeric(Kmax)
+for (k in 1:(Kmax))
+{
+  km = kmeans(kmeans_orientation[,3], centers = k, nstart = 100)
+  IW[k]=km$tot.withinss
+}
+
+km_cluster_orientation = kmeans(kmeans_orientation[,3], centers = 4, nstart = 100)$cluster
+km_cluster_orientation
+
+
+ggplot(data.frame(k = 1:(Kmax),
+                  Iw = IW)) +
+  aes(x = k,
+      y = Iw) +
+  geom_point() +
+  geom_line() +
+  labs(x = "K",
+       y = expression(I[w](K)))
+
+res.pca <- PCA(kmeans_orientation[,3], scale.unit = TRUE, graph = FALSE, ncp = 11)
+p1 = fviz_pca_var(res.pca, axes = 1:2)
+grid.arrange(p1, nrow = 1)
+
+fviz_pca_ind(res.pca, axes = 1:2, col.ind = factor(km_cluster_orientation))
+
+```
+
+
+
 
 
